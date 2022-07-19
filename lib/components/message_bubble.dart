@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat/constants.dart';
 
 class MessageBubble extends StatelessWidget {
-  const MessageBubble({Key? key, this.sender, this.message, this.isMe = true})
+  const MessageBubble(
+      {Key? key,
+      required this.sender,
+      required this.message,
+      required this.isMe})
       : super(key: key);
 
-  final sender;
-  final message;
+  final String sender;
+  final String message;
   final bool isMe;
 
   @override
@@ -18,7 +22,7 @@ class MessageBubble extends StatelessWidget {
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
-            "$sender",
+            sender,
             style: TextStyle(color: Colors.black54, fontSize: 10),
           ),
           Material(
@@ -30,7 +34,7 @@ class MessageBubble extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Text(
-                "$message",
+                message,
                 style: TextStyle(fontSize: 13),
                 textAlign: TextAlign.center,
               ),

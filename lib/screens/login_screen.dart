@@ -7,6 +7,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
 
+  const LoginScreen({Key? key}) : super(key: key);
+
   @override
   LoginScreenState createState() => LoginScreenState();
 }
@@ -31,7 +33,7 @@ class LoginScreenState extends State<LoginScreen> {
               Flexible(
                 child: Hero(
                   tag: 'logo',
-                  child: Container(
+                  child: SizedBox(
                     height: 200.0,
                     child: Image.asset('images/duck.png'),
                   ),
@@ -88,12 +90,13 @@ class LoginScreenState extends State<LoginScreen> {
       _showSpinner = true;
     });
     try {
-      final credential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: _email, password: _password);
 
       setState(() {
         _showSpinner = false;
       });
+      if (!mounted) return;
       Navigator.pushNamed(context, ChatScreen.id);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

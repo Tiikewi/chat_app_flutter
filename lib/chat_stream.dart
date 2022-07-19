@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'components/message_bubble.dart';
@@ -6,11 +7,11 @@ import 'components/message_bubble.dart';
 final _firestore = FirebaseFirestore.instance;
 
 class ChatStream extends StatelessWidget {
-  ChatStream(this.currentUser);
+  ChatStream(this.currentUser, {Key? key}) : super(key: key);
 
-  final currentUser;
+  final User currentUser;
 
-  var fireStoreStream = _firestore
+  final fireStoreStream = _firestore
       .collection('messages')
       .orderBy("time", descending: true)
       .snapshots();

@@ -5,15 +5,16 @@ import 'package:flutter_chat/screens/chat_screen.dart';
 import 'package:flutter_chat/screens/login_screen.dart';
 import 'package:flutter_chat/screens/registration_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter_chat/components/rounded_button.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';
+
+  const WelcomeScreen({Key? key}) : super(key: key);
   @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  WelcomeScreenState createState() => WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen>
+class WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   late AnimationController _controller;
@@ -27,7 +28,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     setState(() {
       _spinnerOnly = true;
     });
-    print(_spinnerOnly);
     try {
       _auth.authStateChanges().listen((User? user) {
         if (user != null) {

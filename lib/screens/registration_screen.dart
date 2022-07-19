@@ -7,6 +7,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration_screen';
 
+  const RegistrationScreen({Key? key}) : super(key: key);
+
   @override
   RegistrationScreenState createState() => RegistrationScreenState();
 }
@@ -37,7 +39,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
               Flexible(
                 child: Hero(
                   tag: 'logo',
-                  child: Container(
+                  child: SizedBox(
                     height: 200.0,
                     child: Image.asset('images/duck.png'),
                   ),
@@ -84,6 +86,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     setState(() {
                       _showSpinner = false;
                     });
+                    if (!mounted) return;
                     Navigator.pushNamed(context, ChatScreen.id);
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {

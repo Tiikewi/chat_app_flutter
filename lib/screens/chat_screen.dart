@@ -11,12 +11,14 @@ late User _user;
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
 
+  const ChatScreen({Key? key}) : super(key: key);
+
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  ChatScreenState createState() => ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
-  TextEditingController _chatInputController = TextEditingController();
+class ChatScreenState extends State<ChatScreen> {
+  final TextEditingController _chatInputController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   String _msg = "";
 
@@ -48,6 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: Icon(Icons.close),
               onPressed: () async {
                 await _auth.signOut();
+                if (!mounted) return;
                 Navigator.pop(context);
               }),
         ],
@@ -87,7 +90,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       decoration: kMessageTextFieldDecoration,
                     ),
                   ),
-                  FlatButton(
+                  TextButton(
                     onPressed: () {
                       if (_msg != "") {
                         final message = <String, dynamic>{
@@ -119,6 +122,8 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class ChatStream extends StatelessWidget {
+  ChatStream({Key? key}) : super(key: key);
+
   var fireStoreStream = _firestore
       .collection('messages')
       .orderBy("time", descending: true)
