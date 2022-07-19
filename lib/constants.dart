@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 const kSendButtonTextStyle = TextStyle(
   color: Colors.green,
@@ -52,3 +53,8 @@ const kWelcomeScreenButtonTextStyle = TextStyle(
 
 const kBubbleColorUser = Colors.green;
 const kBubbleColorOther = Colors.red;
+
+const kSpinner = SpinKitWave(
+  color: Colors.green,
+  size: 50,
+);

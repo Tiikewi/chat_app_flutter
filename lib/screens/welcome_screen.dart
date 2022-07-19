@@ -21,11 +21,21 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late Animation _animation;
   late Animation _colorAnimation;
 
+  bool _spinnerOnly = true;
+
   void getCurrentUser() async {
+    setState(() {
+      _spinnerOnly = true;
+    });
+    print(_spinnerOnly);
     try {
       _auth.authStateChanges().listen((User? user) {
         if (user != null) {
           Navigator.pushNamed(context, ChatScreen.id);
+        } else {
+          setState(() {
+            _spinnerOnly = false;
+          });
         }
       });
     } catch (e) {
@@ -70,76 +80,79 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _colorAnimation.value,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            const SizedBox(
-              height: 200,
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Row(
-                  children: <Widget>[
-                    Flexible(
-                      child: Hero(
-                        tag: 'logo',
-                        child: Container(
-                          height: _animation.value * 100,
-                          child: Image.asset('images/duck.png'),
-                        ),
+      body: _spinnerOnly
+          ? kSpinner
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 200,
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: Hero(
+                              tag: 'logo',
+                              child: Container(
+                                height: _animation.value * 100,
+                                child: Image.asset('images/duck.png'),
+                              ),
+                            ),
+                          ),
+                          AnimatedTextKit(
+                            totalRepeatCount: 1,
+                            animatedTexts: [
+                              TypewriterAnimatedText(
+                                "Chat App",
+                                speed: const Duration(milliseconds: 100),
+                                textStyle: TextStyle(
+                                    fontSize: 35.0,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.grey.shade800),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    AnimatedTextKit(
-                      totalRepeatCount: 1,
-                      animatedTexts: [
-                        TypewriterAnimatedText(
-                          "Chat App",
-                          speed: const Duration(milliseconds: 100),
-                          textStyle: TextStyle(
-                              fontSize: 35.0,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.grey.shade800),
-                        ),
-                      ],
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 10,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
                     ),
-                  ],
-                ),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, LoginScreen.id),
+                    child: const Text(
+                      "Login",
+                      style: kWelcomeScreenButtonTextStyle,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 10,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
+                    ),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, RegistrationScreen.id),
+                    child: const Text(
+                      "Register",
+                      style: kWelcomeScreenButtonTextStyle,
+                    ),
+                  ),
+                  const SizedBox(height: 50.0),
+                ],
               ),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 10,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              ),
-              onPressed: () => Navigator.pushNamed(context, LoginScreen.id),
-              child: const Text(
-                "Login",
-                style: kWelcomeScreenButtonTextStyle,
-              ),
-            ),
-            const SizedBox(height: 15),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 10,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              ),
-              onPressed: () =>
-                  Navigator.pushNamed(context, RegistrationScreen.id),
-              child: const Text(
-                "Register",
-                style: kWelcomeScreenButtonTextStyle,
-              ),
-            ),
-            const SizedBox(height: 50.0),
-          ],
-        ),
-      ),
     );
   }
 }
