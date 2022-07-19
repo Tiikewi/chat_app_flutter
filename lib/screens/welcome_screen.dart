@@ -22,7 +22,7 @@ class WelcomeScreenState extends State<WelcomeScreen>
   late Animation _animation;
   late Animation _colorAnimation;
 
-  bool _spinnerOnly = true;
+  bool _spinnerOnly = false;
 
   void getCurrentUser() async {
     setState(() {
@@ -31,7 +31,7 @@ class WelcomeScreenState extends State<WelcomeScreen>
     try {
       _auth.authStateChanges().listen((User? user) {
         if (user != null) {
-          Navigator.pushNamed(context, ChatScreen.id);
+          Navigator.pushReplacementNamed(context, ChatScreen.id);
         } else {
           setState(() {
             _spinnerOnly = false;

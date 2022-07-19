@@ -87,7 +87,8 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                       _showSpinner = false;
                     });
                     if (!mounted) return;
-                    Navigator.pushNamed(context, ChatScreen.id);
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.pushReplacementNamed(context, ChatScreen.id);
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       print('The password provided is too weak.');

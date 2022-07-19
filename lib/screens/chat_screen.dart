@@ -3,6 +3,7 @@ import 'package:flutter_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat/components/message_bubble.dart';
+import 'package:flutter_chat/screens/welcome_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -51,7 +52,8 @@ class ChatScreenState extends State<ChatScreen> {
               onPressed: () async {
                 await _auth.signOut();
                 if (!mounted) return;
-                Navigator.pop(context);
+                Navigator.popUntil(context, (route) => route.isFirst);
+                Navigator.pushReplacementNamed(context, WelcomeScreen.id);
               }),
         ],
         title: Row(

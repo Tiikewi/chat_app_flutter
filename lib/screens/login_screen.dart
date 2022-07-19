@@ -97,7 +97,8 @@ class LoginScreenState extends State<LoginScreen> {
         _showSpinner = false;
       });
       if (!mounted) return;
-      Navigator.pushNamed(context, ChatScreen.id);
+      Navigator.popUntil(context, (route) => route.isFirst);
+      Navigator.pushReplacementNamed(context, ChatScreen.id);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
