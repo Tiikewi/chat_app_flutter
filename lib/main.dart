@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/screens/welcome_screen.dart';
 import 'package:flutter_chat/screens/login_screen.dart';
@@ -8,11 +9,14 @@ import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final _auth = FirebaseAuth.instance;
+  bool isLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {

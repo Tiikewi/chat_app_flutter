@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/constants.dart';
+import 'package:flutter_chat/screens/chat_screen.dart';
 import 'package:flutter_chat/screens/login_screen.dart';
 import 'package:flutter_chat/screens/registration_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -13,13 +15,27 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin {
+  final _auth = FirebaseAuth.instance;
   late AnimationController _controller;
   late AnimationController _colorController;
   late Animation _animation;
   late Animation _colorAnimation;
 
+  void getCurrentUser() async {
+    try {
+      _auth.authStateChanges().listen((User? user) {
+        if (user != null) {
+          Navigator.pushNamed(context, ChatScreen.id);
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
+    getCurrentUser();
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _controller.forward();
