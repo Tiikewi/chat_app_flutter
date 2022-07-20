@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/screens/welcome_screen.dart';
 import 'package:flutter_chat/screens/login_screen.dart';
@@ -17,7 +18,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: WelcomeScreen.id,
+      initialRoute: FirebaseAuth.instance.currentUser != null
+          ? ChatScreen.id
+          : WelcomeScreen.id,
       theme: ThemeData(primarySwatch: Colors.green),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),

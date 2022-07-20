@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/auth_service.dart';
 import 'package:flutter_chat/constants.dart';
 import 'package:flutter_chat/screens/chat_screen.dart';
 import 'package:flutter_chat/screens/login_screen.dart';
@@ -24,28 +25,8 @@ class WelcomeScreenState extends State<WelcomeScreen>
 
   bool _spinnerOnly = false;
 
-  void getCurrentUser() async {
-    setState(() {
-      _spinnerOnly = true;
-    });
-    try {
-      _auth.authStateChanges().listen((User? user) {
-        if (user != null) {
-          Navigator.pushReplacementNamed(context, ChatScreen.id);
-        } else {
-          setState(() {
-            _spinnerOnly = false;
-          });
-        }
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   void initState() {
-    getCurrentUser();
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _controller.forward();
@@ -80,79 +61,76 @@ class WelcomeScreenState extends State<WelcomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _colorAnimation.value,
-      body: _spinnerOnly
-          ? kSpinner
-          : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 200,
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: Hero(
-                              tag: 'logo',
-                              child: Container(
-                                height: _animation.value * 100,
-                                child: Image.asset('images/duck.png'),
-                              ),
-                            ),
-                          ),
-                          AnimatedTextKit(
-                            totalRepeatCount: 1,
-                            animatedTexts: [
-                              TypewriterAnimatedText(
-                                "Chat App",
-                                speed: const Duration(milliseconds: 100),
-                                textStyle: TextStyle(
-                                    fontSize: 35.0,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.grey.shade800),
-                              ),
-                            ],
-                          ),
-                        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            const SizedBox(
+              height: 200,
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: Hero(
+                        tag: 'logo',
+                        child: Container(
+                          height: _animation.value * 100,
+                          child: Image.asset('images/duck.png'),
+                        ),
                       ),
                     ),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 10,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10),
+                    AnimatedTextKit(
+                      totalRepeatCount: 1,
+                      animatedTexts: [
+                        TypewriterAnimatedText(
+                          "Chat App",
+                          speed: const Duration(milliseconds: 100),
+                          textStyle: TextStyle(
+                              fontSize: 35.0,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.grey.shade800),
+                        ),
+                      ],
                     ),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, LoginScreen.id),
-                    child: const Text(
-                      "Login",
-                      style: kWelcomeScreenButtonTextStyle,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 10,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10),
-                    ),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, RegistrationScreen.id),
-                    child: const Text(
-                      "Register",
-                      style: kWelcomeScreenButtonTextStyle,
-                    ),
-                  ),
-                  const SizedBox(height: 50.0),
-                ],
+                  ],
+                ),
               ),
             ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 10,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              ),
+              onPressed: () => Navigator.pushNamed(context, LoginScreen.id),
+              child: const Text(
+                "Login",
+                style: kWelcomeScreenButtonTextStyle,
+              ),
+            ),
+            const SizedBox(height: 15),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 10,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              ),
+              onPressed: () =>
+                  Navigator.pushNamed(context, RegistrationScreen.id),
+              child: const Text(
+                "Register",
+                style: kWelcomeScreenButtonTextStyle,
+              ),
+            ),
+            const SizedBox(height: 50.0),
+          ],
+        ),
+      ),
     );
   }
 }
