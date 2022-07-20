@@ -13,7 +13,7 @@ late User _user;
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
 
-  const ChatScreen({Key? key}) : super(key: key);
+  ChatScreen({Key? key}) : super(key: key);
 
   @override
   ChatScreenState createState() => ChatScreenState();
@@ -24,22 +24,10 @@ class ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   String _msg = "";
 
-  void getCurrentUser() async {
-    try {
-      _auth.authStateChanges().listen((User? user) {
-        if (user != null) {
-          _user = user;
-        }
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    getCurrentUser();
+    _user = FirebaseAuth.instance.currentUser!;
   }
 
   @override
