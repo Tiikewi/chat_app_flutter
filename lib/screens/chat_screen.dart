@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/chat_screen_utils.dart/chat_msg_handler.dart';
 import 'package:flutter_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -94,19 +95,10 @@ class ChatScreenState extends State<ChatScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      if (_msg != "") {
-                        final message = <String, dynamic>{
-                          "sender": _user.email!,
-                          "text": _msg,
-                          "time": FieldValue.serverTimestamp(),
-                        };
-                        _firestore.collection("messages").add(message).then(
-                            (DocumentReference doc) => print(
-                                'DocumentSnapshot added with ID: ${doc.id}'));
+                      MessageHandler(_user).addNewMessage(_msg);
 
-                        _chatInputController.clear();
-                        _msg = "";
-                      }
+                      _chatInputController.clear();
+                      _msg = "";
                     },
                     child: Text(
                       'Send',
