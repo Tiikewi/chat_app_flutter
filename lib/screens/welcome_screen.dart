@@ -17,13 +17,10 @@ class WelcomeScreen extends StatefulWidget {
 
 class WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin {
-  final _auth = FirebaseAuth.instance;
   late AnimationController _controller;
   late AnimationController _colorController;
   late Animation _animation;
   late Animation _colorAnimation;
-
-  bool _spinnerOnly = false;
 
   @override
   void initState() {
@@ -78,7 +75,7 @@ class WelcomeScreenState extends State<WelcomeScreen>
                     Flexible(
                       child: Hero(
                         tag: 'logo',
-                        child: Container(
+                        child: SizedBox(
                           height: _animation.value * 100,
                           child: Image.asset('images/duck.png'),
                         ),

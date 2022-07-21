@@ -6,9 +6,14 @@ import '../components/message_bubble.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
-class ChatStream extends StatelessWidget {
-  ChatStream({Key? key}) : super(key: key);
+class ChatStream extends StatefulWidget {
+  const ChatStream({Key? key}) : super(key: key);
 
+  @override
+  State<ChatStream> createState() => _ChatStreamState();
+}
+
+class _ChatStreamState extends State<ChatStream> {
   var fireStoreStream = _firestore
       .collection('messages')
       .orderBy("time", descending: true)
@@ -49,7 +54,7 @@ class ChatStream extends StatelessWidget {
         var messages = snapshot.data!.docs;
 
         final currentUser =
-            FirebaseAuth.instance.currentUser?.email ?? "No User";
+            FirebaseAuth.instance.currentUser?.email ?? "sender not found";
 
         for (var msg in messages) {
           final msgWidget = MessageBubble(
