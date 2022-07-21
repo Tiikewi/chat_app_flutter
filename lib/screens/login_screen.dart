@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/components/alert_dialog.dart';
 import 'package:flutter_chat/constants.dart';
 import 'package:flutter_chat/screens/chat_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -106,14 +107,14 @@ class LoginScreenState extends State<LoginScreen> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         setState(() {
-          _showDialog(
+          popDialog(
               context: context,
               title: "Invalid email!",
               content: "No user found with given email.");
           _showSpinner = false;
         });
       } else if (e.code == 'wrong-password') {
-        _showDialog(
+        popDialog(
             context: context,
             title: "Invalid password!",
             content: "Password was incorrect.");
@@ -123,24 +124,4 @@ class LoginScreenState extends State<LoginScreen> {
       print(e);
     }
   }
-}
-
-Future<void> _showDialog(
-    {required BuildContext context, required String title, String? content}) {
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(content ?? ""),
-          actions: [
-            TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  "OK",
-                  textAlign: TextAlign.end,
-                ))
-          ],
-        );
-      });
 }
