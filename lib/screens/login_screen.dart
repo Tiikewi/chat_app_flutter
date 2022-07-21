@@ -22,63 +22,67 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ModalProgressHUD(
-        inAsyncCall: _showSpinner,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Flexible(
-                child: Hero(
-                  tag: 'logo',
-                  child: SizedBox(
-                    height: 200.0,
-                    child: Image.asset('images/duck.png'),
+      body: Center(
+        child: ModalProgressHUD(
+          inAsyncCall: _showSpinner,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Flexible(
+                  child: Hero(
+                    tag: 'logo',
+                    child: SizedBox(
+                      height: 200.0,
+                      child: Image.asset('images/duck.png'),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 48.0,
-              ),
-              TextField(
-                keyboardType: TextInputType.emailAddress,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  _email = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(hintText: "Username"),
-              ),
-              const SizedBox(
-                height: 8.0,
-              ),
-              TextField(
-                textAlign: TextAlign.center,
-                obscureText: true,
-                onChanged: (value) {
-                  _password = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(hintText: "Password"),
-              ),
-              const SizedBox(
-                height: 24.0,
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 10,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                const SizedBox(
+                  height: 48.0,
                 ),
-                onPressed: () async {
-                  await logUserIn();
-                },
-                child: const Text(
-                  "Login",
-                  style: kWelcomeScreenButtonTextStyle,
+                TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    _email = value;
+                  },
+                  decoration:
+                      kTextFieldDecoration.copyWith(hintText: "Username"),
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  textAlign: TextAlign.center,
+                  obscureText: true,
+                  onChanged: (value) {
+                    _password = value;
+                  },
+                  decoration:
+                      kTextFieldDecoration.copyWith(hintText: "Password"),
+                ),
+                const SizedBox(
+                  height: 24.0,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 10,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
+                  ),
+                  onPressed: () async {
+                    await logUserIn();
+                  },
+                  child: const Text(
+                    "Login",
+                    style: kWelcomeScreenButtonTextStyle,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -101,14 +105,42 @@ class LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacementNamed(context, ChatScreen.id);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-        //TODO: alert
-        _showSpinner = false;
+        setState(() {
+          _showDialog(
+              context: context,
+              title: "Invalid email!",
+              content: "No user found with given email.");
+          _showSpinner = false;
+        });
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-        //TODO: alert
+        _showDialog(
+            context: context,
+            title: "Invalid password!",
+            content: "Password was incorrect.");
         _showSpinner = false;
       }
+    } catch (e) {
+      print(e);
     }
   }
+}
+
+Future<void> _showDialog(
+    {required BuildContext context, required String title, String? content}) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content ?? ""),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  "OK",
+                  textAlign: TextAlign.end,
+                ))
+          ],
+        );
+      });
 }
