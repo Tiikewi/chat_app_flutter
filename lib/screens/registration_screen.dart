@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat/screens/chat_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
+import '../components/alert_dialog.dart';
+
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration_screen';
 
@@ -91,13 +93,23 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     Navigator.pushReplacementNamed(context, ChatScreen.id);
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
-                      print('The password provided is too weak.');
-                      // TODO: alert
+                      popDialog(
+                          context: context,
+                          title: "Invalid password!",
+                          content:
+                              "Password must be atleast six characters long.");
+                      setState(() {
+                        _showSpinner = false;
+                      });
                     } else if (e.code == 'email-already-in-use') {
                       print('The account already exists for that email.');
-                      //TODO: alert
-
-                      // TODO: already in use
+                      popDialog(
+                          context: context,
+                          title: "Invalid email!",
+                          content: "Given email is already in use.");
+                      setState(() {
+                        _showSpinner = false;
+                      });
                     }
                   } catch (e) {
                     print(e);
