@@ -10,10 +10,10 @@ class ChatStream extends StatefulWidget {
   const ChatStream({Key? key}) : super(key: key);
 
   @override
-  State<ChatStream> createState() => _ChatStreamState();
+  State<ChatStream> createState() => ChatStreamState();
 }
 
-class _ChatStreamState extends State<ChatStream> {
+class ChatStreamState extends State<ChatStream> {
   var fireStoreStream = _firestore
       .collection('messages')
       .orderBy("time", descending: true)
