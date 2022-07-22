@@ -13,15 +13,21 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: null,
-      actions: <Widget>[
-        IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () async {
-              await _auth.signOut();
-              afterLogOut();
-            }),
-      ],
+      leading: PopupMenuButton(
+          icon: CircleAvatar(
+            child: Text("pic"),
+          ),
+          itemBuilder: (context) {
+            return [
+              PopupMenuItem(
+                child: Text("Logout"),
+                onTap: () async {
+                  await _auth.signOut();
+                  afterLogOut();
+                },
+              ),
+            ];
+          }),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

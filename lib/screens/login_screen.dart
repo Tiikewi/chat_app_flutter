@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/constants.dart';
+import 'package:flutter_chat/screens/chat_list_screen.dart';
 import 'package:flutter_chat/screens/chat_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -104,7 +105,7 @@ class LoginScreenState extends State<LoginScreen> {
       });
       if (!mounted) return;
       Navigator.popUntil(context, (route) => route.isFirst);
-      Navigator.pushReplacementNamed(context, ChatScreen.id);
+      Navigator.pushReplacementNamed(context, ChatListScreen.id);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         setState(() {

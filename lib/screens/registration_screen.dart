@@ -6,6 +6,7 @@ import 'package:flutter_chat/screens/chat_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../components/alert_dialog.dart';
+import 'chat_list_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration_screen';
@@ -114,7 +115,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     });
                     if (!mounted) return;
                     Navigator.popUntil(context, (route) => route.isFirst);
-                    Navigator.pushReplacementNamed(context, ChatScreen.id);
+                    Navigator.pushReplacementNamed(context, ChatListScreen.id);
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       popDialog(
