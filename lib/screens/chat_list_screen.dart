@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/screens/contacts_screen.dart';
 
 import 'package:flutter_chat/screens/welcome_screen.dart';
 
@@ -17,6 +18,8 @@ class ChatListScreen extends StatelessWidget {
           title: "Chats",
           afterLogOut: () =>
               Navigator.pushReplacementNamed(context, WelcomeScreen.id),
+          pushContacsScreen: () =>
+              Navigator.pushNamed(context, ContactsScreen.id),
         ),
         body: SafeArea(
           child: Column(

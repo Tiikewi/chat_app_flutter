@@ -5,6 +5,7 @@ import 'package:flutter_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat/components/message_bubble.dart';
+import 'package:flutter_chat/screens/contacts_screen.dart';
 import 'package:flutter_chat/screens/welcome_screen.dart';
 
 import '../chat_screen_utils.dart/chat_stream.dart';
@@ -40,6 +41,8 @@ class ChatScreenState extends State<ChatScreen> {
         title: "Chat",
         afterLogOut: () =>
             Navigator.pushReplacementNamed(context, WelcomeScreen.id),
+        pushContacsScreen: () =>
+            Navigator.pushNamed(context, ContactsScreen.id),
       ),
       body: SafeArea(
         child: Column(

@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat/constants.dart';
 
 class MyAppBar extends StatelessWidget with PreferredSizeWidget {
-  MyAppBar({Key? key, required this.afterLogOut, required this.title})
-      : super(key: key);
+  MyAppBar({
+    Key? key,
+    required this.afterLogOut,
+    required this.title,
+    required this.pushContacsScreen,
+  }) : super(key: key);
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Function afterLogOut;
+  final Function pushContacsScreen;
+
   final String title;
 
   @override
@@ -28,6 +34,14 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
               ),
             ];
           }),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.person_search),
+          onPressed: () {
+            pushContacsScreen();
+          },
+        ),
+      ],
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

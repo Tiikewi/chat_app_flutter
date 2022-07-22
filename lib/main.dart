@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/screens/chat_list_screen.dart';
+import 'package:flutter_chat/screens/contacts_screen.dart';
 import 'package:flutter_chat/screens/welcome_screen.dart';
 import 'package:flutter_chat/screens/login_screen.dart';
 import 'package:flutter_chat/screens/registration_screen.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChatScreen.id: (context) => ChatScreen(),
         RegistrationScreen.id: (context) => const RegistrationScreen(),
         ChatListScreen.id: (context) => ChatListScreen(),
+        ContactsScreen.id: (context) => ContactsScreen(),
       },
     );
   }
