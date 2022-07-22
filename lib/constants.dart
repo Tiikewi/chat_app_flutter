@@ -58,3 +58,5 @@ const kSpinner = SpinKitWave(
   color: Colors.green,
   size: 50,
 );
+
+const kMyAppBarHeight = 50.0;

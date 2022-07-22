@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/chat_screen_utils.dart/chat_msg_handler.dart';
+import 'package:flutter_chat/components/my_app_bar.dart';
 import 'package:flutter_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,31 +36,10 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: null,
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () async {
-                await _auth.signOut();
-                if (!mounted) return;
-                Navigator.popUntil(context, (route) => route.isFirst);
-                Navigator.pushReplacementNamed(context, WelcomeScreen.id);
-              }),
-        ],
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image(
-              image: AssetImage("images/duck.png"),
-              height: 30,
-            ),
-            SizedBox(
-              width: 2,
-            ),
-            Text('Chat'),
-          ],
-        ),
+      appBar: MyAppBar(
+        title: "Chat",
+        afterLogOut: () =>
+            Navigator.pushReplacementNamed(context, WelcomeScreen.id),
       ),
       body: SafeArea(
         child: Column(

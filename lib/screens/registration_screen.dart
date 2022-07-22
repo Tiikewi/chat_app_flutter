@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,6 +21,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   String _email = "";
   String _password = "";
   bool _showSpinner = false;
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -85,6 +87,28 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: _email, password: _password);
+
+                    // Add user to database
+                    if (newUser.user != null) {
+                      final user = <String, dynamic>{
+                        "email": newUser.user!.email!,
+                        "username": "set username",
+                        "groups": [],
+                      };
+
+                      await db
+                          .collection("users")
+                          .doc(newUser.user!.uid)
+                          .set(user)
+                          .then((value) =>
+                              print("$user added to users collection"));
+                    } else {
+                      popDialog(
+                          context: context,
+                          title: "Error!",
+                          content:
+                              "Error happened when trying to create user.");
+                    }
                     setState(() {
                       _showSpinner = false;
                     });
@@ -98,22 +122,18 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                           title: "Invalid password!",
                           content:
                               "Password must be atleast six characters long.");
-                      setState(() {
-                        _showSpinner = false;
-                      });
                     } else if (e.code == 'email-already-in-use') {
-                      print('The account already exists for that email.');
                       popDialog(
                           context: context,
                           title: "Invalid email!",
                           content: "Given email is already in use.");
-                      setState(() {
-                        _showSpinner = false;
-                      });
+                    } else if (e.code == 'permission-denied') {
+                      popDialog(context: context, title: "Permission denied");
                     }
                   } catch (e) {
                     print(e);
                   }
+                  _showSpinner = false;
                 },
                 child: const Text(
                   "Register",

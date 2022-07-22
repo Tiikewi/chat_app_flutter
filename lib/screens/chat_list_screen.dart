@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_chat/screens/welcome_screen.dart';
+
+import '../components/my_app_bar.dart';
 
 class ChatListScreen extends StatelessWidget {
   ChatListScreen({Key? key}) : super(key: key);
@@ -10,31 +13,10 @@ class ChatListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: null,
-          actions: <Widget>[
-            IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () async {
-                  await _auth.signOut();
-
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                  Navigator.pushReplacementNamed(context, WelcomeScreen.id);
-                }),
-          ],
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Image(
-                image: AssetImage("images/duck.png"),
-                height: 30,
-              ),
-              SizedBox(
-                width: 2,
-              ),
-              Text('Contacts'),
-            ],
-          ),
+        appBar: MyAppBar(
+          title: "Chats",
+          afterLogOut: () =>
+              Navigator.pushReplacementNamed(context, WelcomeScreen.id),
         ),
         body: SafeArea(
           child: Column(
