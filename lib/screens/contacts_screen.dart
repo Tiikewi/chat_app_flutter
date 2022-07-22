@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/components/my_app_bar.dart';
 import 'package:flutter_chat/screens/welcome_screen.dart';
@@ -103,20 +104,48 @@ class ContacsStreamState extends State<ContacsStream> {
 }
 
 class ContactCard extends StatelessWidget {
-  const ContactCard({
+  ContactCard({
     Key? key,
     required this.contact,
   }) : super(key: key);
 
   final QueryDocumentSnapshot<Object?> contact;
+  var userId = FirebaseAuth.instance.currentUser?.uid ?? "No uid";
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
           print("Contact card of user ${contact["email"]} clicked");
+          var clickedUserId = contact.id;
+
+          try {
+            var senderRef = _firestore.collection('users').doc(userId);
+            var targetRef = _firestore.collection('users').doc(contact.id);
+            var senderData = await senderRef.get();
+            var targetData = await targetRef.get();
+            if (!senderData.exists || !targetData.exists) {
+              print("no docs");
+            } else {
+              var sendersGroups = senderData.data()!["groups"];
+              var targetsGroups = targetData.data()!["groups"];
+
+              if (!sendersGroups.contains(contact.id)) {
+                var idToAdd = [clickedUserId];
+                await senderRef
+                    .update({"groups": FieldValue.arrayUnion(idToAdd)});
+              }
+              if (!targetsGroups.contains(userId)) {
+                var idToAdd = [userId];
+                await targetRef
+                    .update({"groups": FieldValue.arrayUnion(idToAdd)});
+              }
+            }
+          } catch (e) {
+            print("error on contacts screen: $e");
+          }
         },
         child: Card(
           color: Colors.lightGreen,

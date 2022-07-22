@@ -4,7 +4,7 @@ import 'package:flutter_chat/components/my_app_bar.dart';
 import 'package:flutter_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_chat/components/message_bubble.dart';
+
 import 'package:flutter_chat/screens/contacts_screen.dart';
 import 'package:flutter_chat/screens/welcome_screen.dart';
 
@@ -12,7 +12,7 @@ import '../chat_screen_utils.dart/chat_stream.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
-late User _user;
+late User? _user;
 
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
@@ -31,7 +31,7 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    _user = FirebaseAuth.instance.currentUser!;
+    _user = FirebaseAuth.instance.currentUser;
   }
 
   @override
@@ -68,7 +68,7 @@ class ChatScreenState extends State<ChatScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      MessageHandler(_user).addNewMessage(_msg);
+                      // MessageHandler(_user!).addNewMessage(_msg);
 
                       _chatInputController.clear();
                       _msg = "";
